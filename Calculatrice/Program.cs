@@ -108,25 +108,23 @@ namespace Calculatrice
                             error = true;
                             return newCalcul;
                         }
-                        fNbr = float.Parse(calculs.ElementAt(prev));
-                        sNbr = float.Parse(calculs.ElementAt(next));
-                        if (isAdd)
+
+
+                        if (isAdd) // verify if the last calcul was an addition/substraction or not and put to fNbr the right number
                         {
-                            res = Calcul(fNbr, sNbr, calculs.ElementAt(i));
-                            newCalcul.RemoveAt(newCalcul.Count - 1);
-                            newCalcul.Add(res.ToString());
-                            isAdd = false;
-                            i++;
+                            fNbr = float.Parse(calculs.ElementAt(prev));
                         }
                         else
                         {
                             fNbr = float.Parse(newCalcul.ElementAt(newCalcul.Count -1));
-                            res = Calcul(fNbr, sNbr, calculs.ElementAt(i));
-                            newCalcul.RemoveAt(newCalcul.Count - 1);
-                            newCalcul.Add(res.ToString());
-                            isAdd = false;
-                            i++;
                         }
+
+                        sNbr = float.Parse(calculs.ElementAt(next));
+                        res = Calcul(fNbr, sNbr, calculs.ElementAt(i));
+                        newCalcul.RemoveAt(newCalcul.Count - 1);
+                        newCalcul.Add(res.ToString());
+                        isAdd = false;
+                        i++;
                         break;
                     default:
                         newCalcul.Add(s);
