@@ -7,6 +7,7 @@ namespace Calculatrice
     class Program
     {
         static bool isRunning = true;
+        static bool error;
 
         static void Main(string[] args)
         {
@@ -28,7 +29,7 @@ namespace Calculatrice
         static void ProjectLoop()
         {
             string response;
-            float result = 0;
+            float result;
 
             Console.Write(">");
             
@@ -38,10 +39,15 @@ namespace Calculatrice
 
             List<string> endCalculs = PriorityCalculs(allCalcul); //calcul all mult and div -> get only addition and substraction
 
-            if (endCalculs.Count == 1)
+            if (endCalculs.Count == 1 && !error)
             {
                 result = float.Parse(endCalculs.ElementAt(0));
                 Console.WriteLine(result);
+                return;
+            }
+            else if (error)
+            {
+                Console.WriteLine("Erreur syntaxe");
                 return;
             }
 
@@ -77,20 +83,30 @@ namespace Calculatrice
             float res;
             List<string> newCalcul = new List<string>();
 
-            for (int i = 0; i < calculs.Count -1; i++)
+            for (int i = 0; i < calculs.Count; i++)
             {
                 int prev = i - 1;
                 int next = i + 1;
                 string s = calculs.ElementAt(i);
-                switch (s)
+                    switch (s)
                 {
                     case "+":
                     case "-":
+                        if (IsSign(calculs.ElementAt(next)))
+                        {
+                            error = true;
+                            return newCalcul;
+                        }
                         newCalcul.Add(s);
                         break;
                     case "*":
                     case "x":
                     case "/":
+                        if (i == 0 || IsSign(calculs.ElementAt(next)))
+                        {
+                            error = true;
+                            return newCalcul;
+                        }
                         fNbr = float.Parse(calculs.ElementAt(prev));
                         sNbr = float.Parse(calculs.ElementAt(next));
                         res = Calcul(fNbr, sNbr, calculs.ElementAt(i));
@@ -109,7 +125,6 @@ namespace Calculatrice
         // FINAL Calcul
         static float CalculAll(List<string> calculs)
         {
-            float fNbr;
             float sNbr;
             float result = 0;
 
@@ -134,13 +149,17 @@ namespace Calculatrice
                         return 0;
                     }
                 }
+                else if(i == 0 && !IsSign(calculs.ElementAt(i)))
+                {
+                    sNbr = float.Parse(calculs.ElementAt(i));
+                    result += sNbr;
+                }
                 else if (IsSign(calculs.ElementAt(i)))
                 {
-                    fNbr = float.Parse(calculs.ElementAt(prev));
                     sNbr = float.Parse(calculs.ElementAt(next));
 
-                    float resCal = Calcul(fNbr, sNbr, calculs.ElementAt(i));
-                    result += resCal;
+                    float resCal = Calcul(result, sNbr, calculs.ElementAt(i));
+                    result = resCal;
                 }
             }
             return result;
