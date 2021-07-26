@@ -36,7 +36,6 @@ namespace Calculatrice
             response = Console.ReadLine().Replace('.', ','); // Get response
 
             List<string> allCalcul = GetCalculs(response); // parse and put response on array
-
             List<string> endCalculs = PriorityCalculs(allCalcul); //calcul all mult and div -> get only addition and substraction
 
             if (endCalculs.Count == 1 && !error)
@@ -81,6 +80,8 @@ namespace Calculatrice
             float fNbr;
             float sNbr;
             float res;
+            bool isAdd = false;
+
             List<string> newCalcul = new List<string>();
 
             for (int i = 0; i < calculs.Count; i++)
@@ -109,13 +110,27 @@ namespace Calculatrice
                         }
                         fNbr = float.Parse(calculs.ElementAt(prev));
                         sNbr = float.Parse(calculs.ElementAt(next));
-                        res = Calcul(fNbr, sNbr, calculs.ElementAt(i));
-                        newCalcul.RemoveAt(prev);
-                        newCalcul.Add(res.ToString());
-                        i++;
+                        if (isAdd)
+                        {
+                            res = Calcul(fNbr, sNbr, calculs.ElementAt(i));
+                            newCalcul.RemoveAt(newCalcul.Count - 1);
+                            newCalcul.Add(res.ToString());
+                            isAdd = false;
+                            i++;
+                        }
+                        else
+                        {
+                            fNbr = float.Parse(newCalcul.ElementAt(newCalcul.Count -1));
+                            res = Calcul(fNbr, sNbr, calculs.ElementAt(i));
+                            newCalcul.RemoveAt(newCalcul.Count - 1);
+                            newCalcul.Add(res.ToString());
+                            isAdd = false;
+                            i++;
+                        }
                         break;
                     default:
                         newCalcul.Add(s);
+                        isAdd = true;
                         break;
                 }
             }
@@ -130,7 +145,6 @@ namespace Calculatrice
 
             for (int i = 0; i < calculs.Count-1; i++)
             {
-                int prev = i - 1;
                 int next = i + 1;
                 if (i == 0 && IsSign(calculs.ElementAt(i)))   // Verif if first index is a sign
                 {
