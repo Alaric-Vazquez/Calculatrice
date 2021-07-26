@@ -83,6 +83,7 @@ namespace Calculatrice
                 catch (Exception e)
                 {
                     View.DisplayException(e);
+                    break;
                 }
             }
             return result;
@@ -104,7 +105,7 @@ namespace Calculatrice
                 string s = calculs.ElementAt(i);
                 try
                 {
-                    if (!IsAddition(calculs[i]))
+                    if (Model.isNumber.Contains(calculs[i]))
                     {
                         newCalcul.Add(s);
                     } 
@@ -135,6 +136,7 @@ namespace Calculatrice
                 catch(Exception e)
                 {
                     View.DisplayException(e);
+                    break;
                 }
             }
             return newCalcul;
@@ -154,16 +156,25 @@ namespace Calculatrice
 
             foreach (char c in s)
             {
-                if(Model.additionSymbols.Contains(c.ToString()) || Model.multiplySymbols.Contains(c.ToString()))
+                try
                 {
-                    AppendBuffer(ref nbr, ref operationsList);
-                    operationsList.Add(c.ToString());
+                    if (Model.additionSymbols.Contains(c.ToString()) || Model.multiplySymbols.Contains(c.ToString()))
+                    {
+                        AppendBuffer(ref nbr, ref operationsList);
+                        operationsList.Add(c.ToString());
+                    }
+                    else if(Model.isNumber.Contains(c.ToString()))
+                    {
+                        nbr += c;
+                    }
                 }
-                else if (Model.isNumber.Contains(c.ToString()))
+                catch (Exception e)
                 {
-                    nbr += c;
+                    View.DisplayException(e);
+                    break;
                 }
             }
+            AppendBuffer(ref nbr, ref operationsList);
             return operationsList;
         }
     }

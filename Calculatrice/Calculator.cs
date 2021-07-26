@@ -35,7 +35,15 @@ namespace Calculatrice
 
             if (Model.operationsList.Count < 2)
             {
-                Controler.result = float.Parse(Model.operationsList.ElementAt(0));
+                try
+                {
+                    Controler.result = float.Parse(Model.operationsList.ElementAt(0));
+                }
+                catch(Exception e)
+                {
+                    View.DisplayException(e);
+                    return;
+                }
                 View.DisplayLine(Controler.result.ToString());
                 return;
             }
