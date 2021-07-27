@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Calculatrice
 {
-    class Controler
+    class Controller
     {
         public static float result;
 
@@ -31,7 +31,17 @@ namespace Calculatrice
                 return false;
             }
         }
-
+        public static bool IsNumber(string s)
+        {
+            if (Model.authorizedNumber.Contains(s))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         static float Calcul(float fNbr, float sNbr, string s)
         {
             switch (s)
@@ -50,7 +60,6 @@ namespace Calculatrice
                     return 0;
             }
         }
-
         public static float AdditionCalcul(List<string> additionList)
         {
             float sNbr;
@@ -88,7 +97,6 @@ namespace Calculatrice
             }
             return result;
         }
-
         public static List<string> PriorityCalculs(List<string> calculs)
         {
             float fNbr;
@@ -103,40 +111,35 @@ namespace Calculatrice
                 int prev = i - 1;
                 int next = i + 1;
                 string s = calculs.ElementAt(i);
-                try
+                if (IsNumber(calculs[i]))
                 {
-                    if (Model.isNumber.Contains(calculs[i]))
-                    {
-                        newCalcul.Add(s);
-                    } 
-                    else if (IsAddition(calculs[i]))
-                    {
-                        newCalcul.Add(s);
-                        isAdd = true;
-                    }
-                    else if (IsMultiplication(calculs[i]))
-                    {
-                        if (isAdd) // verify if the last calcul was an addition/substraction or not and put to fNbr the right number
-                        {
-                            fNbr = float.Parse(calculs.ElementAt(prev));
-                        }
-                        else
-                        {
-                            fNbr = float.Parse(newCalcul.ElementAt(newCalcul.Count - 1));
-                        }
-
-                        sNbr = float.Parse(calculs.ElementAt(next));
-                        res = Calcul(fNbr, sNbr, calculs.ElementAt(i));
-                        newCalcul.RemoveAt(newCalcul.Count - 1);
-                        newCalcul.Add(res.ToString());
-                        isAdd = false;
-                        i++;
-                    }
+                    newCalcul.Add(s);
                 }
-                catch(Exception e)
+                else if (IsAddition(calculs[i]))
                 {
-                    View.DisplayException(e);
-                    break;
+                    newCalcul.Add(s);
+                    isAdd = true;
+                }
+                else if (IsMultiplication(calculs[i]))
+                {
+                    if (isAdd) // verify if the last calcul was an addition/substraction or not and put to fNbr the right number
+                    {
+                        fNbr = float.Parse(calculs.ElementAt(prev));
+                    }
+                    else
+                    {
+                        fNbr = float.Parse(newCalcul.ElementAt(newCalcul.Count - 1));
+                    }
+
+                    sNbr = float.Parse(calculs.ElementAt(next));
+
+                    ValidateDivision(fNbr, sNbr);
+
+                    res = Calcul(fNbr, sNbr, calculs.ElementAt(i));
+                    newCalcul.RemoveAt(newCalcul.Count - 1);
+                    newCalcul.Add(res.ToString());
+                    isAdd = false;
+                    i++;
                 }
             }
             return newCalcul;
@@ -152,30 +155,38 @@ namespace Calculatrice
         public static List<string> SaveStringIntoList(string s)
         {
             string nbr = string.Empty;
+            char prevChar = ' ';
             List<string> operationsList = new List<string>();
 
             foreach (char c in s)
             {
-                try
+                if (Model.additionSymbols.Contains(c.ToString()) || Model.multiplySymbols.Contains(c.ToString()))
                 {
-                    if (Model.additionSymbols.Contains(c.ToString()) || Model.multiplySymbols.Contains(c.ToString()))
+                    if (!string.IsNullOrWhiteSpace(prevChar.ToString()))
                     {
-                        AppendBuffer(ref nbr, ref operationsList);
-                        operationsList.Add(c.ToString());
+                        ValidateSyntax(c, prevChar);
                     }
-                    else if(Model.isNumber.Contains(c.ToString()))
-                    {
-                        nbr += c;
-                    }
+                    AppendBuffer(ref nbr, ref operationsList);
+                    operationsList.Add(c.ToString());
                 }
-                catch (Exception e)
+                else if (IsNumber(c.ToString()))
                 {
-                    View.DisplayException(e);
-                    break;
+                    nbr += c;
                 }
+                prevChar = c;
             }
             AppendBuffer(ref nbr, ref operationsList);
             return operationsList;
+        }
+        public static void ValidateDivision(float fNbr, float sNbr)
+        {
+            if (fNbr == 0 || sNbr == 0)
+                throw new CalculatorExceptionDivisionByZero("Vous ne pouvez pas Multiplier ou Diviser par 0");
+        }
+        public static void ValidateSyntax(char c,char prevChar)
+        {
+            if(!IsNumber(prevChar.ToString() ))
+                throw new CalculatorExceptionDivisionByZero(prevChar + " " + c + " ");
         }
     }
 }
