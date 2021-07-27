@@ -133,7 +133,7 @@ namespace Calculatrice
 
                     sNbr = float.Parse(calculs.ElementAt(next));
 
-                    ValidateDivision(fNbr, sNbr);
+                    ValidateDivision(s, sNbr);
 
                     res = Calcul(fNbr, sNbr, calculs.ElementAt(i));
                     newCalcul.RemoveAt(newCalcul.Count - 1);
@@ -178,10 +178,10 @@ namespace Calculatrice
             AppendBuffer(ref nbr, ref operationsList);
             return operationsList;
         }
-        public static void ValidateDivision(float fNbr, float sNbr)
+        public static void ValidateDivision(string s, float sNbr)
         {
-            if (fNbr == 0 || sNbr == 0)
-                throw new CalculatorExceptionDivisionByZero("Vous ne pouvez pas Multiplier ou Diviser par 0");
+            if (s == "/" && sNbr == 0)
+                throw new CalculatorExceptionDivisionByZero("Vous ne pouvez pas Diviser par 0");
         }
         public static void ValidateSyntax(char c,char prevChar)
         {
