@@ -21,17 +21,14 @@ namespace Calculatrice
                 catch (CalculatorExceptionDoubleSymbol e)
                 {
                     View.DisplayLine(e.Message);
-                    return;
                 }
                 catch (CalculatorExceptionDivisionByZero e)
                 {
                     View.DisplayLine(e.Message);
-                    return;
                 }
                 catch (Exception e)
                 {
                     View.DisplayLine(e.Message);
-                    return;
                 }
             }
         }
@@ -53,9 +50,9 @@ namespace Calculatrice
 
             if (Model.additionList.Count < 2)
             {
-                if (Controller.IsNumber(Model.additionList.ElementAt(0)))
+                if (Controller.IsStringNumber(Model.additionList.ElementAt(0)))
                 {
-                    Controller.result = float.Parse(Model.operationsList.ElementAt(0));
+                    Controller.result = float.Parse(Model.additionList.ElementAt(0));
                     View.DisplayLine(Controller.result.ToString());
                 }
                 return;

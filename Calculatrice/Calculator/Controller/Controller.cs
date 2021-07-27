@@ -5,42 +5,33 @@ using System.Text;
 
 namespace Calculatrice
 {
-    class Controller
+    public class Controller
     {
         public static float result;
 
-        static bool IsAddition(string s)
+        static bool IsAdditionOrSubstraction(string s)
         {
-            if (Model.additionSymbols.Contains(s)) 
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return Model.additionSymbols.Contains(s); 
         }
-        static bool IsMultiplication(string s)
+        static bool IsMultiplicationOrDivision(string s)
         {
-            if (Model.multiplySymbols.Contains(s)) 
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return Model.multiplySymbols.Contains(s);
         }
-        public static bool IsNumber(string s)
+        public static bool IsNumber(char s)
         {
-            if (Model.authorizedNumber.Contains(s))
+            return Model.authorizedNumber.Contains(s);
+        }
+
+        public static bool IsStringNumber(string s)
+        {
+            foreach(char c in s)
             {
-                return true;
+                if (!IsNumber(c))
+                {
+                    return false;
+                }
             }
-            else
-            {
-                return false;
-            }
+            return true;
         }
         static float Calcul(float fNbr, float sNbr, string s)
         {
@@ -69,18 +60,12 @@ namespace Calculatrice
             {
                 int next = i + 1;
 
-                if (i == 0 && !IsAddition(additionList.ElementAt(0)))
+                if (i == 0 && !IsAdditionOrSubstraction(additionList.ElementAt(0)))
                 {
                     sNbr = float.Parse(additionList.ElementAt(i));
                     result += sNbr;
                 }
-                else if (IsAddition(additionList[i]) && additionList.ElementAt(i) == "+")
-                {
-                    sNbr = float.Parse(additionList.ElementAt(next));
-                    float resCal = Calcul(result, sNbr, additionList.ElementAt(i));
-                    result = resCal;
-                }
-                else if (IsAddition(additionList[i]) && additionList.ElementAt(i) == "+")
+                else if (IsAdditionOrSubstraction(additionList[i]))
                 {
                     sNbr = float.Parse(additionList.ElementAt(next));
                     float resCal = Calcul(result, sNbr, additionList.ElementAt(i));
@@ -103,16 +88,16 @@ namespace Calculatrice
                 int prev = i - 1;
                 int next = i + 1;
                 string s = calculs.ElementAt(i);
-                if (IsNumber(calculs[i]))
+                if (IsStringNumber(s))
                 {
                     newCalcul.Add(s);
                 }
-                else if (IsAddition(calculs[i]))
+                else if (IsAdditionOrSubstraction(s))
                 {
                     newCalcul.Add(s);
                     isAdd = true;
                 }
-                else if (IsMultiplication(calculs[i]))
+                else if (IsMultiplicationOrDivision(s))
                 {
                     if (isAdd) // verify if the last calcul was an addition/substraction or not and put to fNbr the right number
                     {
@@ -128,7 +113,10 @@ namespace Calculatrice
                     ValidateDivision(s, sNbr);
 
                     res = Calcul(fNbr, sNbr, calculs.ElementAt(i));
-                    newCalcul.RemoveAt(newCalcul.Count - 1);
+                    if(newCalcul.Count > 0)
+                    {
+                        newCalcul.RemoveAt(newCalcul.Count - 1);
+                    }
                     newCalcul.Add(res.ToString());
                     isAdd = false;
                     i++;
@@ -152,20 +140,21 @@ namespace Calculatrice
 
             foreach (char c in s)
             {
+                char indexChar = c;
                 if (Model.additionSymbols.Contains(c.ToString()) || Model.multiplySymbols.Contains(c.ToString()))
                 {
                     if (!string.IsNullOrWhiteSpace(prevChar.ToString()))
                     {
-                        ValidateSyntax(c, prevChar);
+                        ValidateSyntax(ref indexChar, ref prevChar, ref operationsList);
                     }
                     AppendBuffer(ref nbr, ref operationsList);
-                    operationsList.Add(c.ToString());
+                    operationsList.Add(indexChar.ToString());
                 }
-                else if (IsNumber(c.ToString()))
+                else if (IsNumber(indexChar))
                 {
-                    nbr += c;
+                    nbr += indexChar;
                 }
-                prevChar = c;
+                prevChar = indexChar;
             }
             AppendBuffer(ref nbr, ref operationsList);
             return operationsList;
@@ -175,10 +164,34 @@ namespace Calculatrice
             if (s == "/" && sNbr == 0)
                 throw new CalculatorExceptionDivisionByZero("Vous ne pouvez pas Diviser par 0");
         }
-        public static void ValidateSyntax(char c,char prevChar)
+        public static void ValidateSyntax(ref char indexChar, ref char prevChar, ref List<string> operationsList)
         {
-            if(!IsNumber(prevChar.ToString() ))
-                throw new CalculatorExceptionDivisionByZero(prevChar + " " + c + " ");
+            //verify if there is a double symbol and if the calculation can still be done
+            {
+                int i = operationsList.Count - 1;
+                if (prevChar == '+' && indexChar == '+')
+                {
+                    operationsList.RemoveAt(i);
+                }
+                else if(prevChar == '+' && indexChar == '-')
+                {
+                    operationsList.RemoveAt(i);
+                }
+                else if (prevChar == '-' && indexChar == '+')
+                {
+                    operationsList.RemoveAt(i);
+                    indexChar = '-';
+                }
+                else if (prevChar == '-' && indexChar == '-')
+                {
+                    operationsList.RemoveAt(i);
+                    indexChar = '+';
+                }
+                else if (IsMultiplicationOrDivision(prevChar.ToString()) && IsMultiplicationOrDivision(indexChar.ToString()))
+                {
+                    throw new CalculatorExceptionDivisionByZero(prevChar + " " + indexChar + " ");
+                }
+            }
         }
     }
 }
