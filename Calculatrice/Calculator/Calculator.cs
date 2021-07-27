@@ -14,7 +14,25 @@ namespace Calculatrice
 
             while (isRunning)
             {
-                ProjectLoop();
+                try
+                {
+                    ProjectLoop();
+                }
+                catch (CalculatorExceptionDoubleSymbol e)
+                {
+                    View.DisplayLine(e.Message);
+                    return;
+                }
+                catch (CalculatorExceptionDivisionByZero e)
+                {
+                    View.DisplayLine(e.Message);
+                    return;
+                }
+                catch (Exception e)
+                {
+                    View.DisplayLine(e.Message);
+                    return;
+                }
             }
         }
 
@@ -29,26 +47,9 @@ namespace Calculatrice
             View.Display(">");
 
             response = View.GetUserInput();
-            try
-            {
-                Model.operationsList = Controller.SaveStringIntoList(response);
-                Model.additionList = Controller.PriorityCalculs(Model.operationsList);
-            }
-            catch (CalculatorExceptionDoubleSymbol e)
-            {
-                View.DisplayLine(e.Message);
-                return;
-            }
-            catch(CalculatorExceptionDivisionByZero e)
-            {
-                View.DisplayLine(e.Message);
-                return;
-            }
-            catch(Exception e)
-            {
-                View.DisplayLine(e.Message);
-                return;
-            }
+
+            Model.operationsList = Controller.SaveStringIntoList(response);
+            Model.additionList = Controller.PriorityCalculs(Model.operationsList);
 
             if (Model.additionList.Count < 2)
             {

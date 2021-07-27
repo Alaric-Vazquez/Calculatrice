@@ -69,30 +69,22 @@ namespace Calculatrice
             {
                 int next = i + 1;
 
-                try
+                if (i == 0 && !IsAddition(additionList.ElementAt(0)))
                 {
-                    if (i == 0 && !IsAddition(additionList.ElementAt(0)))
-                    {
-                        sNbr = float.Parse(additionList.ElementAt(i));
-                        result += sNbr;
-                    }
-                    else if (IsAddition(additionList[i]) && additionList.ElementAt(i) == "+")
-                    {
-                        sNbr = float.Parse(additionList.ElementAt(next));
-                        float resCal = Calcul(result, sNbr, additionList.ElementAt(i));
-                        result = resCal;
-                    }
-                    else if (IsAddition(additionList[i]) && additionList.ElementAt(i) == "+")
-                    {
-                        sNbr = float.Parse(additionList.ElementAt(next));
-                        float resCal = Calcul(result, sNbr, additionList.ElementAt(i));
-                        result = resCal;
-                    }
+                    sNbr = float.Parse(additionList.ElementAt(i));
+                    result += sNbr;
                 }
-                catch (Exception e)
+                else if (IsAddition(additionList[i]) && additionList.ElementAt(i) == "+")
                 {
-                    View.DisplayException(e);
-                    break;
+                    sNbr = float.Parse(additionList.ElementAt(next));
+                    float resCal = Calcul(result, sNbr, additionList.ElementAt(i));
+                    result = resCal;
+                }
+                else if (IsAddition(additionList[i]) && additionList.ElementAt(i) == "+")
+                {
+                    sNbr = float.Parse(additionList.ElementAt(next));
+                    float resCal = Calcul(result, sNbr, additionList.ElementAt(i));
+                    result = resCal;
                 }
             }
             return result;
