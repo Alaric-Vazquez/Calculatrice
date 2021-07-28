@@ -18,14 +18,4 @@ namespace Calculatrice
     {
         public ControllerQuitException() { }
     }
-    //class CalculatorBadInputException : CalculatorException
-    //{
-    //    public CalculatorBadInputException() { }
-
-    //    public CalculatorBadInputException(string s)
-    //        : base(s)
-    //    {
-
-    //    }
-    //}
 }

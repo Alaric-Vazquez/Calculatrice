@@ -14,7 +14,7 @@ namespace Calculatrice
         }
         public float Calculate(string userInput)
         {
-            model.operationsList = SaveStringIntoList(userInput);
+            model.operationsList = SaveUserInputIntoList(userInput);
             model.additionList = PriorityCalculs(model.operationsList);
             return AdditionCalcul(model.additionList);
         }
@@ -102,16 +102,18 @@ namespace Calculatrice
             float sNbr = 0;
             float res= 0;
             bool isAdd = false;
+            int count = calculs.Count;
 
             List<string> newCalcul = new List<string>();
 
-            for (int i = 0; i < calculs.Count; i++)
+            for (int i = 0; i < count; i++)
             {
                 int next = i + 1;
                 string s = calculs.ElementAt(i);
                 if (IsStringNumber(s))
                 {
                     newCalcul.Add(s);
+                    Console.WriteLine(s);
                 }
                 else if (IsAdditionOrSubstraction(s))
                 {
@@ -120,19 +122,24 @@ namespace Calculatrice
                 }
                 else if (IsMultiplicationOrDivision(s))
                 {
+                    CheckIfSecondNumberExist(next, count - 1, newCalcul.ElementAt(newCalcul.Count - 1), calculs.ElementAt(i));
                     fNbr = InitFirstNumber(isAdd, calculs, newCalcul, i);
                     sNbr = float.Parse(calculs.ElementAt(next));
 
                     CheckDivision(s, sNbr);
 
                     res = Calcul(fNbr, sNbr, calculs.ElementAt(i));
-                    newCalcul.RemoveAt(newCalcul.Count - 1);
-                    newCalcul.Add(res.ToString());
+                    ReplaceLastIndexByResult(ref newCalcul, res);
                     isAdd = false;
                     i++;
                 }
             }
             return newCalcul;
+        }
+        private void ReplaceLastIndexByResult(ref List<string> newCalcul, float res)
+        {
+            newCalcul.RemoveAt(newCalcul.Count - 1);
+            newCalcul.Add(res.ToString());
         }
         private float InitFirstNumber(bool isAdd, List<string> calculs, List<string> newCalcul, int i)
         {
@@ -150,7 +157,7 @@ namespace Calculatrice
                 nbr = string.Empty;
             }
         }
-        private List<string> SaveStringIntoList(string s)
+        private List<string> SaveUserInputIntoList(string s)
         {
             string nbr = string.Empty;
             char prevChar = ' ';
@@ -181,6 +188,13 @@ namespace Calculatrice
             }
             AppendBuffer(ref nbr, ref operationsList);
             return operationsList;
+        }
+        private void CheckIfSecondNumberExist(int next, int count, string nbr, string symbol)
+        {
+            if(next > count)
+            {
+                throw new ControllerException("Invalid syntax --> " + nbr + symbol);
+            }
         }
         private void CheckFirstIndex(string s)
         {
