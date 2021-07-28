@@ -8,7 +8,8 @@ namespace Calculatrice
     {
         static void Main(string[] args)
         {
-            Calculator.run();
+            Calculator calculator = new Calculator();
+            calculator.run();
         }
     }
 }

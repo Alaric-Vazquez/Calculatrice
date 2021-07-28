@@ -7,8 +7,19 @@ namespace Calculatrice
 {
     class Calculator
     {
+        public View view;
+        public Model model;
+        public Controller controller;
+
+        public Calculator()
+        {
+            view = new View();
+            model = new Model();
+            controller = new Controller(ref model);
+        }
+
         static bool isRunning = true;
-        public static void run()
+        public void run()
         {
             ProjectInit();
 
@@ -20,46 +31,29 @@ namespace Calculatrice
                 }
                 catch (CalculatorExceptionDoubleSymbol e)
                 {
-                    View.DisplayLine(e.Message);
+                    view.DisplayLine(e.Message);
                 }
                 catch (CalculatorExceptionDivisionByZero e)
                 {
-                    View.DisplayLine(e.Message);
+                    view.DisplayLine(e.Message);
                 }
                 catch (Exception e)
                 {
-                    View.DisplayLine(e.Message);
+                    view.DisplayLine(e.Message);
                 }
             }
         }
 
-        static void ProjectInit()
+        void ProjectInit()
         {
-            View.DisplayLine("Calculatrice :");
+            view.DisplayLine("Calculatrice :");
         }
-        static void ProjectLoop()
+        void ProjectLoop()
         {
-            string response;
-
-            View.Display(">");
-
-            response = View.GetUserInput();
-
-            Model.operationsList = Controller.SaveStringIntoList(response);
-            Model.additionList = Controller.PriorityCalculs(Model.operationsList);
-
-            if (Model.additionList.Count < 2)
-            {
-                if (Controller.IsStringNumber(Model.additionList.ElementAt(0)))
-                {
-                    Controller.result = float.Parse(Model.additionList.ElementAt(0));
-                    View.DisplayLine(Controller.result.ToString());
-                }
-                return;
-            }
-
-            Controller.result = Controller.AdditionCalcul(Model.additionList);
-            View.DisplayLine(Controller.result.ToString());
+            view.Display(">");
+            string userInput = view.GetUserInput();
+            float result = controller.Calculate(userInput);
+            view.DisplayLine(result.ToString());
         }
     }
 }

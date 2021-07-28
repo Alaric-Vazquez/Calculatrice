@@ -7,22 +7,30 @@ namespace Calculatrice
 {
     public class Controller
     {
-        public static float result;
-
-        static bool IsAdditionOrSubstraction(string s)
+        private Model model;
+        public Controller(ref Model _model) 
         {
-            return Model.additionSymbols.Contains(s); 
+            model = _model;
         }
-        static bool IsMultiplicationOrDivision(string s)
+        public float Calculate(string userInput)
         {
-            return Model.multiplySymbols.Contains(s);
+            model.operationsList = SaveStringIntoList(userInput);
+            model.additionList = PriorityCalculs(model.operationsList);
+            return AdditionCalcul(model.additionList);
         }
-        public static bool IsNumber(char s)
+        private bool IsAdditionOrSubstraction(string s)
         {
-            return Model.authorizedNumber.Contains(s);
+            return model.additionSymbols.Contains(s); 
         }
-
-        public static bool IsStringNumber(string s)
+        private bool IsMultiplicationOrDivision(string s)
+        {
+            return model.multiplySymbols.Contains(s);
+        }
+        private bool IsNumber(char s)
+        {
+            return model.authorizedNumber.Contains(s);
+        }
+        private bool IsStringNumber(string s)
         {
             foreach(char c in s)
             {
@@ -33,7 +41,7 @@ namespace Calculatrice
             }
             return true;
         }
-        static float Calcul(float fNbr, float sNbr, string s)
+        private float Calcul(float fNbr, float sNbr, string s)
         {
             switch (s)
             {
@@ -51,10 +59,14 @@ namespace Calculatrice
                     return 0;
             }
         }
-        public static float AdditionCalcul(List<string> additionList)
+        private float AdditionCalcul(List<string> additionList)
         {
             float sNbr;
             float result = 0;
+            if (model.additionList.Count < 2)
+            {
+                return float.Parse(model.additionList.ElementAt(0));
+            }
 
             for (int i = 0; i < additionList.Count - 1; i++)
             {
@@ -74,7 +86,7 @@ namespace Calculatrice
             }
             return result;
         }
-        public static List<string> PriorityCalculs(List<string> calculs)
+        private List<string> PriorityCalculs(List<string> calculs)
         {
             float fNbr;
             float sNbr;
@@ -124,7 +136,7 @@ namespace Calculatrice
             }
             return newCalcul;
         }
-        static void AppendBuffer(ref string nbr, ref List<string> allCalcul)
+        private void AppendBuffer(ref string nbr, ref List<string> allCalcul)
         {
             if (!string.IsNullOrWhiteSpace(nbr))
             {
@@ -132,7 +144,7 @@ namespace Calculatrice
                 nbr = string.Empty;
             }
         }
-        public static List<string> SaveStringIntoList(string s)
+        private List<string> SaveStringIntoList(string s)
         {
             string nbr = string.Empty;
             char prevChar = ' ';
@@ -141,7 +153,7 @@ namespace Calculatrice
             foreach (char c in s)
             {
                 char indexChar = c;
-                if (Model.additionSymbols.Contains(c.ToString()) || Model.multiplySymbols.Contains(c.ToString()))
+                if (model.additionSymbols.Contains(c.ToString()) || model.multiplySymbols.Contains(c.ToString()))
                 {
                     if (!string.IsNullOrWhiteSpace(prevChar.ToString()))
                     {
@@ -159,12 +171,12 @@ namespace Calculatrice
             AppendBuffer(ref nbr, ref operationsList);
             return operationsList;
         }
-        public static void ValidateDivision(string s, float sNbr)
+        private void ValidateDivision(string s, float sNbr)
         {
             if (s == "/" && sNbr == 0)
                 throw new CalculatorExceptionDivisionByZero("Vous ne pouvez pas Diviser par 0");
         }
-        public static void ValidateSyntax(ref char indexChar, ref char prevChar, ref List<string> operationsList)
+        private void ValidateSyntax(ref char indexChar, ref char prevChar, ref List<string> operationsList)
         {
             //verify if there is a double symbol and if the calculation can still be done
             {
