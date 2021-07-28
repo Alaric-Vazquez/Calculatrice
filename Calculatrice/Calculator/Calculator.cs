@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Calculatrice
 {
     class Calculator
     {
-        public View view;
-        public Model model;
-        public Controller controller;
+        private View view;
+        private Model model;
+        private Controller controller;
+        private bool isRunning = true;
 
         public Calculator()
         {
@@ -18,7 +16,6 @@ namespace Calculatrice
             controller = new Controller(ref model);
         }
 
-        static bool isRunning = true;
         public void run()
         {
             ProjectInit();
@@ -29,17 +26,18 @@ namespace Calculatrice
                 {
                     ProjectLoop();
                 }
-                catch (CalculatorExceptionDoubleSymbol e)
+                catch(ControllerQuitException e)
                 {
-                    view.DisplayLine(e.Message);
+                    isRunning = false;
                 }
-                catch (CalculatorExceptionDivisionByZero e)
+                catch (ControllerException e)
                 {
                     view.DisplayLine(e.Message);
                 }
                 catch (Exception e)
                 {
                     view.DisplayLine(e.Message);
+                    Environment.Exit(1);
                 }
             }
         }
@@ -52,8 +50,17 @@ namespace Calculatrice
         {
             view.Display(">");
             string userInput = view.GetUserInput();
+            VerifyIfUserQuits(userInput);
+            
             float result = controller.Calculate(userInput);
             view.DisplayLine(result.ToString());
+        }
+        void VerifyIfUserQuits(string userInput)
+        {
+            if (string.Compare(userInput, "q") == 0)
+            {
+                throw new ControllerQuitException();
+            }
         }
     }
 }

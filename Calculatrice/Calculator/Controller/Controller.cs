@@ -20,15 +20,25 @@ namespace Calculatrice
         }
         private bool IsAdditionOrSubstraction(string s)
         {
-            return model.additionSymbols.Contains(s); 
+            if(s.Length > 1)
+            {
+                return false;
+            }
+            char c = char.Parse(s);
+            return model.additionSymbols.Contains(c);
         }
         private bool IsMultiplicationOrDivision(string s)
         {
-            return model.multiplySymbols.Contains(s);
+            if (s.Length > 1)
+            {
+                return false;
+            }
+            char c = char.Parse(s);
+            return model.multiplySymbols.Contains(c);
         }
-        private bool IsNumber(char s)
+        private bool IsNumber(char c)
         {
-            return model.authorizedNumber.Contains(s);
+            return model.authorizedNumber.Contains(c);
         }
         private bool IsStringNumber(string s)
         {
@@ -56,12 +66,12 @@ namespace Calculatrice
                 case "/":
                     return fNbr / sNbr;
                 default:
-                    return 0;
+                    throw new ControllerException("Forgoten operator.");
             }
         }
         private float AdditionCalcul(List<string> additionList)
         {
-            float sNbr;
+            float sNbr = 0;
             float result = 0;
             if (model.additionList.Count < 2)
             {
@@ -71,13 +81,13 @@ namespace Calculatrice
             for (int i = 0; i < additionList.Count - 1; i++)
             {
                 int next = i + 1;
-
+                
                 if (i == 0 && !IsAdditionOrSubstraction(additionList.ElementAt(0)))
                 {
                     sNbr = float.Parse(additionList.ElementAt(i));
                     result += sNbr;
                 }
-                else if (IsAdditionOrSubstraction(additionList[i]))
+                else if (IsAdditionOrSubstraction(additionList.ElementAt(i)))
                 {
                     sNbr = float.Parse(additionList.ElementAt(next));
                     float resCal = Calcul(result, sNbr, additionList.ElementAt(i));
@@ -88,16 +98,15 @@ namespace Calculatrice
         }
         private List<string> PriorityCalculs(List<string> calculs)
         {
-            float fNbr;
-            float sNbr;
-            float res;
+            float fNbr = 0;
+            float sNbr = 0;
+            float res= 0;
             bool isAdd = false;
 
             List<string> newCalcul = new List<string>();
 
             for (int i = 0; i < calculs.Count; i++)
             {
-                int prev = i - 1;
                 int next = i + 1;
                 string s = calculs.ElementAt(i);
                 if (IsStringNumber(s))
@@ -113,7 +122,7 @@ namespace Calculatrice
                 {
                     if (isAdd) // verify if the last calcul was an addition/substraction or not and put to fNbr the right number
                     {
-                        fNbr = float.Parse(calculs.ElementAt(prev));
+                        fNbr = float.Parse(calculs.ElementAt(i - 1));
                     }
                     else
                     {
@@ -153,7 +162,7 @@ namespace Calculatrice
             foreach (char c in s)
             {
                 char indexChar = c;
-                if (model.additionSymbols.Contains(c.ToString()) || model.multiplySymbols.Contains(c.ToString()))
+                if (model.additionSymbols.Contains(c) || model.multiplySymbols.Contains(c))
                 {
                     if (!string.IsNullOrWhiteSpace(prevChar.ToString()))
                     {
@@ -166,6 +175,10 @@ namespace Calculatrice
                 {
                     nbr += indexChar;
                 }
+                else
+                {
+                    throw new ControllerException("Invalid number: " + indexChar);
+                }
                 prevChar = indexChar;
             }
             AppendBuffer(ref nbr, ref operationsList);
@@ -174,7 +187,7 @@ namespace Calculatrice
         private void ValidateDivision(string s, float sNbr)
         {
             if (s == "/" && sNbr == 0)
-                throw new CalculatorExceptionDivisionByZero("Vous ne pouvez pas Diviser par 0");
+                throw new ControllerException("Vous ne pouvez pas Diviser par 0");
         }
         private void ValidateSyntax(ref char indexChar, ref char prevChar, ref List<string> operationsList)
         {
@@ -201,7 +214,7 @@ namespace Calculatrice
                 }
                 else if (IsMultiplicationOrDivision(prevChar.ToString()) && IsMultiplicationOrDivision(indexChar.ToString()))
                 {
-                    throw new CalculatorExceptionDivisionByZero(prevChar + " " + indexChar + " ");
+                    throw new ControllerException(prevChar + " " + indexChar + " ");
                 }
             }
         }
