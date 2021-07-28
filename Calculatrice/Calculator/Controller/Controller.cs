@@ -120,30 +120,27 @@ namespace Calculatrice
                 }
                 else if (IsMultiplicationOrDivision(s))
                 {
-                    if (isAdd) // verify if the last calcul was an addition/substraction or not and put to fNbr the right number
-                    {
-                        fNbr = float.Parse(calculs.ElementAt(i - 1));
-                    }
-                    else
-                    {
-                        fNbr = float.Parse(newCalcul.ElementAt(newCalcul.Count - 1));
-                    }
-
+                    fNbr = InitFirstNumber(isAdd, calculs, newCalcul, i);
                     sNbr = float.Parse(calculs.ElementAt(next));
 
-                    ValidateDivision(s, sNbr);
+                    CheckDivision(s, sNbr);
 
                     res = Calcul(fNbr, sNbr, calculs.ElementAt(i));
-                    if(newCalcul.Count > 0)
-                    {
-                        newCalcul.RemoveAt(newCalcul.Count - 1);
-                    }
+                    newCalcul.RemoveAt(newCalcul.Count - 1);
                     newCalcul.Add(res.ToString());
                     isAdd = false;
                     i++;
                 }
             }
             return newCalcul;
+        }
+        private float InitFirstNumber(bool isAdd, List<string> calculs, List<string> newCalcul, int i)
+        {
+            if (isAdd) // verify if the last calcul was an addition/substraction or not and put to fNbr the right number
+            {
+                return float.Parse(calculs.ElementAt(i - 1));
+            }
+            return float.Parse(newCalcul.ElementAt(newCalcul.Count - 1));
         }
         private void AppendBuffer(ref string nbr, ref List<string> allCalcul)
         {
@@ -158,6 +155,7 @@ namespace Calculatrice
             string nbr = string.Empty;
             char prevChar = ' ';
             List<string> operationsList = new List<string>();
+            CheckFirstIndex(s);
 
             foreach (char c in s)
             {
@@ -166,7 +164,7 @@ namespace Calculatrice
                 {
                     if (!string.IsNullOrWhiteSpace(prevChar.ToString()))
                     {
-                        ValidateSyntax(ref indexChar, ref prevChar, ref operationsList);
+                        CheckSyntax(ref indexChar, ref prevChar, ref operationsList);
                     }
                     AppendBuffer(ref nbr, ref operationsList);
                     operationsList.Add(indexChar.ToString());
@@ -184,12 +182,19 @@ namespace Calculatrice
             AppendBuffer(ref nbr, ref operationsList);
             return operationsList;
         }
-        private void ValidateDivision(string s, float sNbr)
+        private void CheckFirstIndex(string s)
+        {
+            if (IsMultiplicationOrDivision(s.ElementAt(0).ToString()))
+            {
+                throw new ControllerException("You can't begin with a multiplication or a division.");
+            }
+        }
+        private void CheckDivision(string s, float sNbr)
         {
             if (s == "/" && sNbr == 0)
-                throw new ControllerException("Vous ne pouvez pas Diviser par 0");
+                throw new ControllerException("You can't divide by 0.");
         }
-        private void ValidateSyntax(ref char indexChar, ref char prevChar, ref List<string> operationsList)
+        private void CheckSyntax(ref char indexChar, ref char prevChar, ref List<string> operationsList)
         {
             //verify if there is a double symbol and if the calculation can still be done
             {
@@ -214,7 +219,7 @@ namespace Calculatrice
                 }
                 else if (IsMultiplicationOrDivision(prevChar.ToString()) && IsMultiplicationOrDivision(indexChar.ToString()))
                 {
-                    throw new ControllerException(prevChar + " " + indexChar + " ");
+                    throw new ControllerException("Invalid syntax --> " + prevChar + " " + indexChar);
                 }
             }
         }
