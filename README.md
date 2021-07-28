@@ -1,6 +1,7 @@
 # Calculatrice
 C# Sample Code - Calculator
 
-To use this calculator enter a calcul (only addition, substraction, multiplication and division) in the terminal.  
+To use this calculator type a calculation in the terminal. (Exemple : 3x3+2-1)  
+You can use the following operator ('+', '-', 'x' or '*' and '/')  
 This calculator manages priorities.  
-To quit the program please send 'q'.
+To quit the program please type 'q'.
