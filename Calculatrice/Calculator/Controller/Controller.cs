@@ -113,7 +113,6 @@ namespace Calculatrice
                 if (IsStringNumber(s))
                 {
                     newCalcul.Add(s);
-                    Console.WriteLine(s);
                 }
                 else if (IsAdditionOrSubstraction(s))
                 {
