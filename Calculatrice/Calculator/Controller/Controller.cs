@@ -181,7 +181,7 @@ namespace Calculatrice
                 }
                 else
                 {
-                    throw new ControllerException("Invalid number: " + indexChar);
+                    throw new ControllerException("Invalid number --> " + indexChar);
                 }
                 prevChar = indexChar;
             }
