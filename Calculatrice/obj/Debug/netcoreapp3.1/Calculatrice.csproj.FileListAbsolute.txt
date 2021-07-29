@@ -4,7 +4,6 @@ D:\1 Project CV\Calculatrice\Calculatrice\bin\Debug\netcoreapp3.1\Calculatrice.r
 D:\1 Project CV\Calculatrice\Calculatrice\bin\Debug\netcoreapp3.1\Calculatrice.runtimeconfig.dev.json
 D:\1 Project CV\Calculatrice\Calculatrice\bin\Debug\netcoreapp3.1\Calculatrice.dll
 D:\1 Project CV\Calculatrice\Calculatrice\bin\Debug\netcoreapp3.1\Calculatrice.pdb
-D:\1 Project CV\Calculatrice\Calculatrice\obj\Debug\netcoreapp3.1\Calculatrice.csproj.AssemblyReference.cache
 D:\1 Project CV\Calculatrice\Calculatrice\obj\Debug\netcoreapp3.1\Calculatrice.AssemblyInfoInputs.cache
 D:\1 Project CV\Calculatrice\Calculatrice\obj\Debug\netcoreapp3.1\Calculatrice.AssemblyInfo.cs
 D:\1 Project CV\Calculatrice\Calculatrice\obj\Debug\netcoreapp3.1\Calculatrice.csproj.CoreCompileInputs.cache

@@ -1,3 +1,13 @@
 D:\1 Project CV\Calculatrice\Calculatrice\obj\Release\netcoreapp3.1\Calculatrice.csproj.AssemblyReference.cache
 D:\1 Project CV\Calculatrice\Calculatrice\obj\Release\netcoreapp3.1\Calculatrice.AssemblyInfoInputs.cache
 D:\1 Project CV\Calculatrice\Calculatrice\obj\Release\netcoreapp3.1\Calculatrice.AssemblyInfo.cs
+D:\1 Project CV\Calculatrice\Calculatrice\bin\Release\netcoreapp3.1\Calculatrice.exe
+D:\1 Project CV\Calculatrice\Calculatrice\bin\Release\netcoreapp3.1\Calculatrice.deps.json
+D:\1 Project CV\Calculatrice\Calculatrice\bin\Release\netcoreapp3.1\Calculatrice.runtimeconfig.json
+D:\1 Project CV\Calculatrice\Calculatrice\bin\Release\netcoreapp3.1\Calculatrice.runtimeconfig.dev.json
+D:\1 Project CV\Calculatrice\Calculatrice\bin\Release\netcoreapp3.1\Calculatrice.dll
+D:\1 Project CV\Calculatrice\Calculatrice\bin\Release\netcoreapp3.1\Calculatrice.pdb
+D:\1 Project CV\Calculatrice\Calculatrice\obj\Release\netcoreapp3.1\Calculatrice.csproj.CoreCompileInputs.cache
+D:\1 Project CV\Calculatrice\Calculatrice\obj\Release\netcoreapp3.1\Calculatrice.dll
+D:\1 Project CV\Calculatrice\Calculatrice\obj\Release\netcoreapp3.1\Calculatrice.pdb
+D:\1 Project CV\Calculatrice\Calculatrice\obj\Release\netcoreapp3.1\Calculatrice.genruntimeconfig.cache

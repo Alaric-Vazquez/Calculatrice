@@ -1,0 +1,5 @@
+D:\1 Project CV\Calculatrice\Calculatrice\bin\Release\netcoreapp3.1\publish\Calculatrice.exe
+D:\1 Project CV\Calculatrice\Calculatrice\bin\Release\netcoreapp3.1\publish\Calculatrice.dll
+D:\1 Project CV\Calculatrice\Calculatrice\bin\Release\netcoreapp3.1\publish\Calculatrice.deps.json
+D:\1 Project CV\Calculatrice\Calculatrice\bin\Release\netcoreapp3.1\publish\Calculatrice.runtimeconfig.json
+D:\1 Project CV\Calculatrice\Calculatrice\bin\Release\netcoreapp3.1\publish\Calculatrice.pdb
