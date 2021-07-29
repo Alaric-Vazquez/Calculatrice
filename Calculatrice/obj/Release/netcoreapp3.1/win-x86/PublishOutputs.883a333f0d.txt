@@ -1,0 +1,2 @@
+D:\1 Project CV\Calculatrice\Calculatrice\bin\Release\netcoreapp3.1\publish\Calculatrice.pdb
+D:\1 Project CV\Calculatrice\Calculatrice\bin\Release\netcoreapp3.1\publish\Calculatrice.exe
