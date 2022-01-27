@@ -1660,6 +1660,16 @@
         "runtime": {
           "lib/netstandard1.3/System.Xml.XDocument.dll": {}
         }
+      },
+      "Calculatrice/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "compile": {
+          "bin/placeholder/Calculatrice.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Calculatrice.dll": {}
+        }
       }
     }
   },
@@ -6103,10 +6113,16 @@
         "system.xml.xdocument.4.3.0.nupkg.sha512",
         "system.xml.xdocument.nuspec"
       ]
+    },
+    "Calculatrice/1.0.0": {
+      "type": "project",
+      "path": "../Calculatrice/Calculatrice.csproj",
+      "msbuildProject": "../Calculatrice/Calculatrice.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
+      "Calculatrice >= 1.0.0",
       "MSTest.TestAdapter >= 2.2.3",
       "MSTest.TestFramework >= 2.2.3",
       "Microsoft.NET.Test.Sdk >= 16.9.4",
@@ -6144,7 +6160,11 @@
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\1 Project CV\\Calculatrice\\Calculatrice\\Calculatrice.csproj": {
+              "projectPath": "D:\\1 Project CV\\Calculatrice\\Calculatrice\\Calculatrice.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

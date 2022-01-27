@@ -10,3 +10,4 @@ D:\1 Project CV\Calculatrice\Calculatrice\obj\Debug\netcoreapp3.1\Calculatrice.c
 D:\1 Project CV\Calculatrice\Calculatrice\obj\Debug\netcoreapp3.1\Calculatrice.dll
 D:\1 Project CV\Calculatrice\Calculatrice\obj\Debug\netcoreapp3.1\Calculatrice.pdb
 D:\1 Project CV\Calculatrice\Calculatrice\obj\Debug\netcoreapp3.1\Calculatrice.genruntimeconfig.cache
+D:\1 Project CV\Calculatrice\Calculatrice\obj\Debug\netcoreapp3.1\Calculatrice.csproj.AssemblyReference.cache
