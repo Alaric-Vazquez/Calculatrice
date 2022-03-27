@@ -8,7 +8,7 @@ namespace Calculatrice
     {
         static void Main(string[] args)
         {
-            Controller calculator = new Controller();
+            Controller calculator = new Controller();// mon autre commentaire
             calculator.run();
         }
     }
