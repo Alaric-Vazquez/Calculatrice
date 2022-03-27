@@ -18,4 +18,9 @@ namespace Calculatrice
     {
         public ControllerQuitException() { }
     }
+
+    class ControllerClearException : ControllerException
+    {
+        public ControllerClearException() { }
+    }
 }
