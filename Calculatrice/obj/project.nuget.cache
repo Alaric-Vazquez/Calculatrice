@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "UB4lS13yAb/tV0BewHMU1rfcNg7imxWK359RgvHmrU/Q8OeTRNnkt0Ddx/Cp6hLwIrdGNPDt5D5uH9I6dKlRKg==",
+  "dgSpecHash": "8d0FluReKjkBzpAXbLjB9hjpTHjn7AO7Ag9UuQTrJRkWCGznQpTaDkGgn37E7pDrNYiQbSvUYeO+lG4le/wGsQ==",
   "success": true,
   "projectFilePath": "D:\\1 Project CV\\Calculatrice\\Calculatrice\\Calculatrice.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\ragga\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.25\\microsoft.netcore.app.host.win-x64.3.1.25.nupkg.sha512"
+  ],
   "logs": []
 }
